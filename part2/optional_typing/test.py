@@ -4,6 +4,7 @@ from pathlib import Path
 import os
 import main
 import solution
+from typing import Optional, Dict
 
 project_name = Path(os.path.abspath(__file__)).parent.parent.parent.name
 cwd = Path.cwd()
@@ -16,11 +17,22 @@ from ttools.skyprotests.tests import SkyproTestCase  # noqa: E402
 
 class ExceptionTestCase(SkyproTestCase):
     def setUp(self):
-        self.expected = solution.sum_arr.__annotations__
-        self.annotations = main.sum_arr.__annotations__
+        self.annotations = main.get_user_by_id.__annotations__
 
     def test_func_has_annotations(self):
-        for annotation in self.expected:
+        self.assertTrue(
+            hasattr(main, "User"),
+            "%@Пожалуйста, не удаляйте класс User, он необходим для успешного выполнения задания"
+        )
+
+        user = getattr(main, 'User')
+        expected = {
+            "users": Dict[int, user],
+            "user_id": int,
+            "return": Optional[user]
+        }
+
+        for annotation in expected:
             if annotation != "return":
                 self.assertIn(
                     annotation, self.annotations,
@@ -32,15 +44,15 @@ class ExceptionTestCase(SkyproTestCase):
                     f"%@Проверьте что Вы написали аннотацию на значение, которое возвращается функцией"
                 )
 
-        for annotation in self.expected:
+        for annotation in expected:
             if annotation != "return":
                 self.assertEqual(
-                    self.annotations.get(annotation), self.expected.get(annotation),
+                    self.annotations.get(annotation), expected.get(annotation),
                     f"%@Проверьте что правильно определили тип для аргумента {annotation}"
                 )
             else:
                 self.assertEqual(
-                    self.annotations.get(annotation), self.expected.get(annotation),
+                    self.annotations.get(annotation), expected.get(annotation),
                     f"%@Проверьте, что правильно написали тип данных, которые возвращает функция"
                 )
 

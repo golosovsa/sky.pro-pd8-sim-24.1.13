@@ -6,6 +6,5 @@
 # Подсказка: для решения можно использовать Any или Union из typing.
 
 
-
-def greeting(name):
-    return 'Hello ' + name
+def get_postcode(address):
+    return address.get('postcode')

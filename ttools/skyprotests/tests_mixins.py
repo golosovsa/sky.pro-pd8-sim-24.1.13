@@ -364,3 +364,21 @@ class TemplateMixin(ResponseTestsMixin):
 
         soup = BeautifulSoup(response.get_data(True), "html.parser")
         return soup
+
+
+class AnnotationsCheckMixin:
+    def check_annotations(self, student_class, author_class):
+        student_annotations = student_class.__annotations__
+        author_annotations = author_class.__annotations__
+
+        for annotation in author_annotations:
+            self.assertIn(
+                annotation, student_annotations,
+                f"%@Проверьте что написали аннотацию для аргумента {annotation}"
+            )
+
+        for annotation in author_annotations:
+            self.assertEqual(
+                student_annotations.get(annotation), author_annotations.get(annotation),
+                f"%@Проверьте что в классе {student_class.__name__} правильно указана аннотация для аргумента {annotation}"
+            )
