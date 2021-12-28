@@ -49,7 +49,7 @@ class VkData:
 VkDataSchema = marshmallow_dataclass.class_schema(VkData)
 
 
-def get_vk_data(data) -> VkData:
+def get_vk_data(data: dict) -> VkData:
     try:
         return VkDataSchema().load(data)
     except marshmallow.exceptions.ValidationError:

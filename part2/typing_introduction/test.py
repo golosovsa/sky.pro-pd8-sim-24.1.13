@@ -7,6 +7,8 @@ import solution
 import inspect
 from typing import List, Dict
 from dataclasses import dataclass
+import io
+import contextlib
 
 project_name = Path(os.path.abspath(__file__)).parent.parent.parent.name
 cwd = Path.cwd()
@@ -14,7 +16,7 @@ parts = cwd.parts
 basefolder_index = parts.index(project_name)
 basepath = Path(*parts[: basefolder_index + 1])
 sys.path.append(str(basepath))
-from ttools.skyprotests.tests import SkyproTestCase  # noqa: E402
+from ttools.skyprotests.tests import SkyproTestCase, StdoutCapturing  # noqa: E402
 from ttools.skyprotests.tests_mixins import AnnotationsCheckMixin  # noqa: E402
 
 
@@ -117,6 +119,18 @@ class DataClassesTestCase(SkyproTestCase, AnnotationsCheckMixin):
                 msg=f"%@Проверьте, что при вызове функции {function_name} с некорректными данными выбрасывается исключение ValueError"
         ):
             main.get_vk_data(invalid_json)
+
+        cwd = os.getcwd()
+        path = Path(cwd)
+        path = path.joinpath("main.py")
+        stream = os.popen(f'mypy {path}')
+        output = stream.read()
+        self.assertIn(
+            "Success", output,
+            "%@Попробуйте проверить свою задачу с помощью утилиты mypy, скорее всего там еще остались ошибки"
+            "Возможно где-то отсутствует аннтотация, или в функцию передан аргумент неверного типа"
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
