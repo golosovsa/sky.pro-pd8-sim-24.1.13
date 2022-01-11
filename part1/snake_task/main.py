@@ -7,7 +7,7 @@ import re
 
 def snake_checker(input_str):
     regex = re.compile(r"regular_value")
-    m = regex.match(input_str)
+    m = regex.search(input_str)
     return bool(m)
 
 
