@@ -6,11 +6,13 @@
 # на выходе возвращает список дат заданного формата.
 
 import re
+from operator import itemgetter
 
 
 def find_date(txt):
-    # TODO напишите Ваш код здесь
-    pass
+    regex = re.compile(r"(\d{2}/\w+/\d{4}(:\d{2}){3})")
+    match = regex.findall(txt)
+    return list(map(itemgetter(0), match))
 
 
 if __name__ == "__main__":

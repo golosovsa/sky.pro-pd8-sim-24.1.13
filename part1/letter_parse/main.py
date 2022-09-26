@@ -17,8 +17,13 @@ letters = [
 
 
 def get_plates(letters):
-    # TODO напишите ваш код здесь
-    pass
+    regex = re.compile(r"([а-я]{1,2}\d{3}[а-я_]{1,2}\d{2})")
+    for letter in letters:
+        match = regex.findall(letter)
+        if not match:
+            continue
+        for res in match:
+            yield res
 
 
 if __name__ == "__main__":
