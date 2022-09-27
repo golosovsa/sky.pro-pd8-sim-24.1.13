@@ -4,9 +4,11 @@
 # значение - или число или строка, на выходе должна вернуть почтовый индекс (число).
 # Для успешного прохождения тестов
 # при написании аннотаций используйте, пожалуйста, библиотеку typing
+from typing import Union, Dict
+
 
 # Подсказка: для решения можно использовать Any или Union из typing.
 
 
-def get_postcode(address):
-    return address.get('postcode')
+def get_postcode(address: Dict[str, Union[str, int]]) -> int:
+    return int(address.get('postcode'))

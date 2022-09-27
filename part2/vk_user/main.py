@@ -14,29 +14,30 @@ from dataclasses import dataclass
 from typing import List, Dict
 
 vk_data = {
-   "response": {
-       "count": 1,
-       "items": [{
-           "id": 100,
-           "first_name": "Иван",
-           "last_name": "Иванов",
-           "online_info": {
-               "visible": True,
-               "last_seen": 1639414645
-           },
-           "occupation": {
-               "KTS": {
-                   "id": 1,
-                   "type": "work"
-               }
-           },
-           "universities": [{
-               "chair_name": "Автоматизированные системы обработки информации и управления",
-               "id": 250,
-               "name": "МГТУ им. Н.Э. Баумана"
-           }],
-       }]
-   }
+    "response": {
+        "count": 1,
+        "items": [
+            {
+            "id": 100,
+            "first_name": "Иван",
+            "last_name": "Иванов",
+            "online_info": {
+                "visible": True,
+                "last_seen": 1639414645
+            },
+            "occupation": {
+                "KTS": {
+                    "id": 1,
+                    "type": "work"
+                }
+            },
+            "universities": [{
+                "chair_name": "Автоматизированные системы обработки информации и управления",
+                "id": 250,
+                "name": "МГТУ им. Н.Э. Баумана"
+            }],
+        }]
+    }
 }
 
 
