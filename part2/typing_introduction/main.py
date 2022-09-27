@@ -39,22 +39,75 @@
 #
 # Для успешного прохождения тестов
 # при написании аннотаций используйте, пожалуйста, библиотеку typing
+from dataclasses import dataclass
+from marshmallow_dataclass import class_schema
+from marshmallow.exceptions import ValidationError
+from typing import List, Dict, Optional, Tuple, Union, Any
 
 from vk_data import vk_data
 
-# TODO здесь можно начинать =)
+
+@dataclass
+class University:
+    id: int
+    chair_name: str
+    name: str
 
 
-def get_university_pairs(data):
-    items = data["response"]["items"]
-    universities = {}
+@dataclass
+class Occupation:
+    id: int
+    type: str
+
+
+@dataclass
+class OnlineInfo:
+    visible: bool
+    last_seen: int
+
+
+@dataclass
+class User:
+    id: int
+    first_name: str
+    last_name: str
+    online_info: OnlineInfo
+    occupation: Dict[str, Occupation]
+    universities: List[University]
+
+
+@dataclass
+class VkResponse:
+    count: int
+    items: List[User]
+
+
+@dataclass
+class VkData:
+    response: VkResponse
+
+
+VkDataSchema = class_schema(VkData)
+
+
+def get_vk_data(data: Dict) -> VkData:
+    try:
+        return VkDataSchema().load(data)
+    except ValidationError:
+        raise ValueError
+
+
+def get_university_pairs(data: Dict) -> List[Tuple[str, int]]:
+    vk_data_obj = get_vk_data(data)
+    items = vk_data_obj.response.items
+    universities: Dict[int, Any] = {}
     for user in items:
         university_set = set()
-        for university in user["universities"]:
-            university_id = university["id"]
+        for university in user.universities:
+            university_id = university.id
             if university_id not in universities:
                 universities[university_id] = {
-                    "name": university["name"],
+                    "name": university.name,
                     "count": 0
                 }
             if university_id not in university_set:
